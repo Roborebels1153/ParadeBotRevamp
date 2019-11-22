@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.CargoArm;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.PneumaticActuator;
@@ -25,16 +26,23 @@ import frc.robot.subsystems.PneumaticActuator;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static enum RobotType {
+    PARADE_BOT, ARM_BOT;
+  }
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI oi;
 
   public static Drive drive;
   public static PneumaticActuator actuator;
+  public static CargoArm arm;
 
   private boolean mLastToggleState = false;
 
+  private RobotType selectedRobot;
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public final SendableChooser<RobotType> robotSelect = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -45,9 +53,13 @@ public class Robot extends TimedRobot {
     oi = new OI();
     drive = new Drive();
     actuator = new PneumaticActuator();
+    arm = new CargoArm();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    robotSelect.setDefaultOption("ParadeBot", RobotType.PARADE_BOT);
+    robotSelect.addOption("Arm Bot", RobotType.ARM_BOT);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Robot Selection", robotSelect);
   }
 
   /**
@@ -133,6 +145,7 @@ public class Robot extends TimedRobot {
   }
 
   public void manueverRobot(){
+    selectedRobot = robotSelect.getSelected();
     drive.drive(oi.getDriverStick(), oi.getOverrideStick());
     boolean bothPressed = oi.getOverrideStick().getRawButton(6);
     if (bothPressed && !mLastToggleState) {
@@ -144,6 +157,9 @@ public class Robot extends TimedRobot {
       actuator.out();
     } else if(oi.getOverrideStick().getRawButton(4)){
       actuator.in();
+    }
+    if(selectedRobot == RobotType.ARM_BOT){
+      arm.setArticulatorPower(oi.getOpStick().getRawAxis(1));
     }
   }
 

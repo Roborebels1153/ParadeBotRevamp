@@ -52,11 +52,15 @@ public class OI {
   public static final int DRIVESTICK_X = 0;
   Joystick driverStick = new Joystick(0);
   Joystick overrideStick = new Joystick(1);
+  Joystick opStick = new Joystick(2);
 
   public Joystick getDriverStick() {
 		return driverStick;
   }
   public Joystick getOverrideStick(){
     return overrideStick;
+  }
+  public Joystick getOpStick(){
+    return opStick;
   }
 }
