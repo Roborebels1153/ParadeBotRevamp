@@ -17,13 +17,19 @@ public class CargoArm extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   private Victor armArticulator;
+  private Victor armRoller;
 
   public CargoArm() {
     armArticulator = new Victor(5);
+    armRoller = new Victor(4);
   }
 
   public void setArticulatorPower(double value){
     armArticulator.set(value);
+  }
+
+  public void setRollerPower(double value){
+    armRoller.set(-value);
   }
 
   @Override

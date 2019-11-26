@@ -160,6 +160,13 @@ public class Robot extends TimedRobot {
     }
     if(selectedRobot == RobotType.ARM_BOT){
       arm.setArticulatorPower(oi.getOpStick().getRawAxis(1));
+      if(oi.getOpStick().getRawButton(6)){
+        arm.setRollerPower(1);
+      } else if(oi.getOpStick().getRawButton(5)){
+        arm.setRollerPower(-1);
+      } else {
+        arm.setRollerPower(0);
+      }
     }
   }
 
