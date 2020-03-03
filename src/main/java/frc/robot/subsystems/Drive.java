@@ -96,7 +96,7 @@ public class Drive extends Subsystem {
   public void drive(Joystick driveStick, Joystick overrideStick) {
     double moveValue = 0;
     double rotateValue = 0;
-    if(Math.abs(overrideStick.getRawAxis(OI.OVERRIDESTICK_LEFT_Y)) > 0 || Math.abs(overrideStick.getRawAxis(OI.OVERRIDESTICK_RIGHT_X)) > 0){
+    if(Math.abs(overrideStick.getRawAxis(OI.OVERRIDESTICK_LEFT_Y)) > 0.075 || Math.abs(overrideStick.getRawAxis(OI.OVERRIDESTICK_RIGHT_X)) > 0.075){
       moveValue = Constants.k_drive_override_coefficient * overrideStick.getRawAxis(OI.OVERRIDESTICK_LEFT_Y);
       rotateValue = Constants.k_turn_override_coefficient * overrideStick.getRawAxis(OI.OVERRIDESTICK_RIGHT_X);
     }

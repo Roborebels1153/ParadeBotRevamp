@@ -26,9 +26,6 @@ import frc.robot.subsystems.PneumaticActuator;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static enum RobotType {
-    PARADE_BOT, ARM_BOT;
-  }
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI oi;
 
@@ -38,11 +35,8 @@ public class Robot extends TimedRobot {
 
   private boolean mLastToggleState = false;
 
-  private RobotType selectedRobot;
-
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  public final SendableChooser<RobotType> robotSelect = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -55,11 +49,8 @@ public class Robot extends TimedRobot {
     actuator = new PneumaticActuator();
     arm = new CargoArm();
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    robotSelect.setDefaultOption("ParadeBot", RobotType.PARADE_BOT);
-    robotSelect.addOption("Arm Bot", RobotType.ARM_BOT);
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    SmartDashboard.putData("Robot Selection", robotSelect);
   }
 
   /**
@@ -145,7 +136,6 @@ public class Robot extends TimedRobot {
   }
 
   public void manueverRobot(){
-    selectedRobot = robotSelect.getSelected();
     drive.drive(oi.getDriverStick(), oi.getOverrideStick());
     boolean bothPressed = oi.getOverrideStick().getRawButton(6);
     if (bothPressed && !mLastToggleState) {
@@ -158,15 +148,13 @@ public class Robot extends TimedRobot {
     } else if(oi.getOverrideStick().getRawButton(4)){
       actuator.in();
     }
-    if(selectedRobot == RobotType.ARM_BOT){
-      arm.setArticulatorPower(oi.getOpStick().getRawAxis(1));
-      if(oi.getOpStick().getRawButton(6)){
-        arm.setRollerPower(1);
-      } else if(oi.getOpStick().getRawButton(5)){
-        arm.setRollerPower(-1);
-      } else {
-        arm.setRollerPower(0);
-      }
+    arm.setArticulatorPower(oi.getOpStick().getRawAxis(1));
+    if(oi.getOpStick().getRawButton(6)){
+      arm.setRollerPower(1);
+    } else if(oi.getOpStick().getRawButton(5)){
+      arm.setRollerPower(-1);
+    } else {
+      arm.setRollerPower(0);
     }
   }
 

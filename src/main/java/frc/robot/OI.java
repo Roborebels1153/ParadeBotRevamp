@@ -49,7 +49,7 @@ public class OI {
   public static final int OVERRIDESTICK_TRIGGER_RIGHT = 3;
   
   public static final int DRIVESTICK_Y = 1;
-  public static final int DRIVESTICK_X = 0;
+  public static final int DRIVESTICK_X = 4;
   Joystick driverStick = new Joystick(0);
   Joystick overrideStick = new Joystick(1);
   Joystick opStick = new Joystick(2);
